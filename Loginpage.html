@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page – Test Cases</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f4f1ec;
+    --surface: #ffffff;
+    --border: #d6d0c8;
+    --text: #1a1814;
+    --muted: #6b6760;
+    --accent: #2a4a7f;
+    --accent-light: #e8edf5;
+    --danger: #c0392b;
+    --danger-light: #fdf0ef;
+    --success: #1d6b3a;
+    --success-light: #edf7f1;
+    --warning: #8a5c00;
+    --warning-light: #fdf5e6;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'Instrument Sans', system-ui, sans-serif;
+    --font-mono: 'DM Mono', 'Courier New', monospace;
+    --radius: 6px;
+    --radius-lg: 12px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .page-header h1 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .page-header p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 2.5rem;
+    width: 100%;
+    max-width: 900px;
+    align-items: start;
+  }
+
+  /* --- Test Panel --- */
+  .test-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .test-panel-header {
+    padding: 1.1rem 1.3rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    background: #fafaf8;
+  }
+
+  .test-panel-header h2 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.2rem;
+  }
+
+  .test-panel-header p {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+
+  .test-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: #fafaf8;
+  }
+
+  .test-tab {
+    padding: 0.6rem 1.1rem;
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    letter-spacing: 0.03em;
+  }
+
+  .test-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .test-cases { padding: 1rem 1.3rem 1.3rem; }
+
+  .tc-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 0.8rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  .tc-card:hover { border-color: var(--accent); }
+  .tc-card.active { border-color: var(--accent); }
+
+  .tc-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    background: #fafaf8;
+  }
+
+  .tc-id {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    letter-spacing: 0.03em;
+  }
+
+  .tc-title {
+    font-size: 0.83rem;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .tc-run-btn {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: opacity 0.15s;
+  }
+
+  .tc-run-btn:hover { opacity: 0.85; }
+
+  .tc-body {
+    display: none;
+    padding: 0.75rem 0.9rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    line-height: 1.55;
+  }
+
+  .tc-card.active .tc-body { display: block; }
+
+  .tc-body strong { color: var(--text); font-weight: 500; }
+
+  .tc-result {
+    margin-top: 0.6rem;
+    padding: 0.45rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.77rem;
+    line-height: 1.4;
+    display: none;
+  }
+
+  .tc-result.show { display: block; }
+  .tc-result.pass { background: var(--success-light); color: var(--success); border: 1px solid #b2d8c2; }
+  .tc-result.fail { background: var(--danger-light); color: var(--danger); border: 1px solid #f0baba; }
+
+  /* boundary value section */
+  .bv-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .bv-title {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 0.7rem;
+  }
+
+  .bv-table { width: 100%; font-size: 0.77rem; border-collapse: collapse; }
+  .bv-table th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bv-table td {
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid #f0ece6;
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .bv-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+    letter-spacing: 0.03em;
+  }
+
+  .bv-badge.accept { background: var(--success-light); color: var(--success); }
+  .bv-badge.reject { background: var(--danger-light); color: var(--danger); }
+
+  /* --- Login Card --- */
+  .login-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem 2rem 1.75rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+
+  .login-brand {
+    text-align: center;
+    margin-bottom: 1.6rem;
+  }
+
+  .login-brand .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.7rem;
+  }
+
+  .login-brand .logo-mark span {
+    color: white;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+  }
+
+  .login-brand h2 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--text);
+  }
+
+  .login-brand p {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+  }
+
+  .form-group { margin-bottom: 1rem; }
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.01em;
+  }
+
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    background: #fafaf8;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  input[type="text"]:focus, input[type="password"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(42, 74, 127, 0.1);
+    background: white;
+  }
+
+  input.error {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1);
+  }
+
+  .login-btn {
+    width: 100%;
+    padding: 0.7rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.15s, transform 0.1s;
+    letter-spacing: 0.01em;
+  }
+
+  .login-btn:hover { background: #1e3a6e; }
+  .login-btn:active { transform: scale(0.99); }
+
+  .msg-box {
+    margin-top: 0.9rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    line-height: 1.45;
+    display: none;
+  }
+
+  .msg-box.show { display: block; }
+  .msg-box.error { background: var(--danger-light); color: var(--danger); border: 1px solid #f0baba; }
+  .msg-box.success { background: var(--success-light); color: var(--success); border: 1px solid #b2d8c2; }
+  .msg-box.warning { background: var(--warning-light); color: var(--warning); border: 1px solid #e8d49a; }
+
+  .test-indicator {
+    text-align: center;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .tc-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    background: #f4f1ec;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .pass-view {
+    display: none;
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .pass-view.show { display: block; }
+  .login-form-inner.hide { display: none; }
+
+  .pass-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--success-light);
+    border: 2px solid #b2d8c2;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .pass-view h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--success);
+    margin-bottom: 0.3rem;
+  }
+
+  .pass-view p {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .reset-btn {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 0.35rem 0.9rem;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  @media (max-width: 700px) {
+    .layout { grid-template-columns: 1fr; }
+    .login-card { order: -1; }
+  }
