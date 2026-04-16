@@ -458,3 +458,307 @@
       <button class="test-tab" onclick="switchTab('task2', this)">Task 2 – Boundary</button>
     </div>
     <div class="test-cases" id="task1-panel">
+
+        <!-- TC_01 -->
+      <div class="tc-card" id="tc01-card" onclick="toggleTC('tc01-card')">
+        <div class="tc-header">
+          <span class="tc-id">TC_01</span>
+          <span class="tc-title">Valid login</span>
+          <button class="tc-run-btn" onclick="event.stopPropagation(); runTC('tc01')">Run ▶</button>
+        </div>
+        <div class="tc-body">
+          <strong>Steps:</strong><br>
+          1. Open login page<br>
+          2. Enter valid username: <code>admin</code><br>
+          3. Enter valid password: <code>secure123</code><br>
+          4. Click Login
+          <div class="tc-result" id="tc01-result"></div>
+        </div>
+      </div>
+
+      <!-- TC_02 -->
+      <div class="tc-card" id="tc02-card" onclick="toggleTC('tc02-card')">
+        <div class="tc-header">
+          <span class="tc-id">TC_02</span>
+          <span class="tc-title">Invalid login</span>
+          <button class="tc-run-btn" onclick="event.stopPropagation(); runTC('tc02')">Run ▶</button>
+        </div>
+        <div class="tc-body">
+          <strong>Steps:</strong><br>
+          1. Open login page<br>
+          2. Enter invalid username: <code>wronguser</code><br>
+          3. Enter invalid password: <code>badpass</code><br>
+          4. Click Login
+          <div class="tc-result" id="tc02-result"></div>
+        </div>
+      </div>
+
+      <!-- TC_03 -->
+      <div class="tc-card" id="tc03-card" onclick="toggleTC('tc03-card')">
+        <div class="tc-header">
+          <span class="tc-id">TC_03</span>
+          <span class="tc-title">Empty fields</span>
+          <button class="tc-run-btn" onclick="event.stopPropagation(); runTC('tc03')">Run ▶</button>
+        </div>
+        <div class="tc-body">
+          <strong>Steps:</strong><br>
+          1. Open login page<br>
+          2. Leave username and password empty<br>
+          3. Click Login
+          <div class="tc-result" id="tc03-result"></div>
+        </div>
+      </div>
+
+      <!-- TC_04 -->
+      <div class="tc-card" id="tc04-card" onclick="toggleTC('tc04-card')">
+        <div class="tc-header">
+          <span class="tc-id">TC_04</span>
+          <span class="tc-title">SQL Injection (basic)</span>
+          <button class="tc-run-btn" onclick="event.stopPropagation(); runTC('tc04')">Run ▶</button>
+        </div>
+        <div class="tc-body">
+          <strong>Steps:</strong><br>
+          1. Open login page<br>
+          2. Enter <code>' OR '1'='1</code> in username<br>
+          3. Enter any password<br>
+          4. Click Login
+          <div class="tc-result" id="tc04-result"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="test-cases" id="task2-panel" style="display:none;">
+      <div class="bv-section">
+        <div class="bv-title">Boundary Value Testing – Password Length (8–12 chars)</div>
+        <table class="bv-table">
+          <thead>
+            <tr>
+              <th>Case ID</th>
+              <th>Input</th>
+              <th>Description</th>
+              <th>Expected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-family: var(--font-mono); font-size:0.72rem; color: var(--accent);">TC_BV_01</td>
+              <td>7 chars</td>
+              <td style="color: var(--muted);">Below minimum</td>
+              <td><span class="bv-badge reject">Rejected</span></td>
+            </tr>
+            <tr>
+              <td style="font-family: var(--font-mono); font-size:0.72rem; color: var(--accent);">TC_BV_02</td>
+              <td>8 chars</td>
+              <td style="color: var(--muted);">Minimum boundary</td>
+              <td><span class="bv-badge accept">Accepted</span></td>
+            </tr>
+            <tr>
+              <td style="font-family: var(--font-mono); font-size:0.72rem; color: var(--accent);">TC_BV_03</td>
+              <td>12 chars</td>
+              <td style="color: var(--muted);">Maximum boundary</td>
+              <td><span class="bv-badge accept">Accepted</span></td>
+            </tr>
+            <tr>
+              <td style="font-family: var(--font-mono); font-size:0.72rem; color: var(--accent);">TC_BV_04</td>
+              <td>13 chars</td>
+              <td style="color: var(--muted);">Above maximum</td>
+              <td><span class="bv-badge reject">Rejected</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 0.9rem;">
+          <div style="font-family: var(--font-mono); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color: var(--muted); margin-bottom:0.5rem;">Live boundary test</div>
+          <div style="display:flex; gap:0.5rem; align-items:center;">
+            <input type="text" id="bv-input" placeholder="Type a password…" style="flex:1;" oninput="checkBoundary()">
+          </div>
+          <div id="bv-result" class="msg-box" style="margin-top:0.5rem;"></div>
+          <div id="bv-len" style="font-size:0.72rem; font-family:var(--font-mono); color:var(--muted); margin-top:0.3rem;">Length: 0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Card -->
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="logo-mark"><span>Login</span></div>
+      <h2>Welcome back</h2>
+      <p>Sign in to your account</p>
+    </div>
+
+    <div class="login-form-inner" id="login-form-inner">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password">
+      </div>
+      <button class="login-btn" onclick="manualLogin()">Login</button>
+      <div class="msg-box" id="msg-box"></div>
+    </div>
+
+    <div class="pass-view" id="pass-view">
+      <div class="pass-icon">✓</div>
+      <h3>Login successful</h3>
+      <p>Redirecting you to the dashboard…</p>
+      <button class="reset-btn" onclick="resetForm()">← Back to login</button>
+    </div>
+
+    <div class="test-indicator">
+      <span class="tc-badge" id="active-tc-badge">No test running</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const VALID_USER = 'admin';
+  const VALID_PASS = 'secure123';
+  const SQL_PATTERN = /('|--|;|OR\s+['"]?1['"]?\s*=\s*['"]?1|DROP\s+TABLE|SELECT\s+\*)/i;
+
+  function showMsg(type, text) {
+    const box = document.getElementById('msg-box');
+    box.className = 'msg-box show ' + type;
+    box.textContent = text;
+  }
+
+  function clearMsg() {
+    const box = document.getElementById('msg-box');
+    box.className = 'msg-box';
+    box.textContent = '';
+    document.getElementById('username').classList.remove('error');
+    document.getElementById('password').classList.remove('error');
+  }
+
+  function setInputs(u, p) {
+    document.getElementById('username').value = u;
+    document.getElementById('password').value = p;
+    clearMsg();
+    document.getElementById('pass-view').classList.remove('show');
+    document.getElementById('login-form-inner').classList.remove('hide');
+  }
+
+  function resetForm() {
+    setInputs('', '');
+    document.getElementById('active-tc-badge').textContent = 'No test running';
+  }
+
+  function login(username, password) {
+    if (!username && !password) {
+      document.getElementById('username').classList.add('error');
+      document.getElementById('password').classList.add('error');
+      showMsg('error', 'Fields cannot be empty');
+      return 'empty';
+    }
+    if (SQL_PATTERN.test(username) || SQL_PATTERN.test(password)) {
+      document.getElementById('username').classList.add('error');
+      showMsg('warning', 'Invalid input detected. SQL injection attempt blocked.');
+      return 'sqli';
+    }
+    if (username === VALID_USER && password === VALID_PASS) {
+      document.getElementById('login-form-inner').classList.add('hide');
+      document.getElementById('pass-view').classList.add('show');
+      return 'success';
+    }
+    document.getElementById('username').classList.add('error');
+    document.getElementById('password').classList.add('error');
+    showMsg('error', 'Invalid credentials');
+    return 'fail';
+  }
+
+  function manualLogin() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    clearMsg();
+    login(u, p);
+  }
+
+  function showTCResult(id, cls, text) {
+    const el = document.getElementById(id + '-result');
+    el.className = 'tc-result show ' + cls;
+    el.textContent = text;
+  }
+
+  function runTC(id) {
+    clearMsg();
+    document.getElementById('pass-view').classList.remove('show');
+    document.getElementById('login-form-inner').classList.remove('hide');
+    document.getElementById('active-tc-badge').textContent = 'Running: ' + id.toUpperCase().replace('tc', 'TC_0').replace('TC_0c', 'TC_');
+
+    if (id === 'tc01') {
+      setInputs(VALID_USER, VALID_PASS);
+      document.getElementById('active-tc-badge').textContent = 'Running: TC_01';
+      setTimeout(() => {
+        const r = login(VALID_USER, VALID_PASS);
+        showTCResult('tc01', r === 'success' ? 'pass' : 'fail',
+          r === 'success' ? '✓ PASS – User logged in, redirected to dashboard' : '✗ FAIL – Unexpected result');
+      }, 300);
+    }
+
+    if (id === 'tc02') {
+      setInputs('wronguser', 'badpass');
+      document.getElementById('active-tc-badge').textContent = 'Running: TC_02';
+      setTimeout(() => {
+        const r = login('wronguser', 'badpass');
+        showTCResult('tc02', r === 'fail' ? 'pass' : 'fail',
+          r === 'fail' ? '✓ PASS – "Invalid credentials" displayed' : '✗ FAIL – Unexpected result');
+      }, 300);
+    }
+
+    if (id === 'tc03') {
+      setInputs('', '');
+      document.getElementById('active-tc-badge').textContent = 'Running: TC_03';
+      setTimeout(() => {
+        const r = login('', '');
+        showTCResult('tc03', r === 'empty' ? 'pass' : 'fail',
+          r === 'empty' ? '✓ PASS – "Fields cannot be empty" displayed' : '✗ FAIL – Unexpected result');
+      }, 300);
+    }
+
+    if (id === 'tc04') {
+      const sqli = "' OR '1'='1";
+      setInputs(sqli, 'anypass');
+      document.getElementById('active-tc-badge').textContent = 'Running: TC_04';
+      setTimeout(() => {
+        const r = login(sqli, 'anypass');
+        showTCResult('tc04', r === 'sqli' ? 'pass' : 'fail',
+          r === 'sqli' ? '✓ PASS – SQL injection blocked, error shown' : '✗ FAIL – Injection not blocked!');
+      }, 300);
+    }
+  }
+
+  function toggleTC(cardId) {
+    const card = document.getElementById(cardId);
+    card.classList.toggle('active');
+  }
+
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.test-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('task1-panel').style.display = tab === 'task1' ? '' : 'none';
+    document.getElementById('task2-panel').style.display = tab === 'task2' ? '' : 'none';
+  }
+
+  function checkBoundary() {
+    const val = document.getElementById('bv-input').value;
+    const len = val.length;
+    document.getElementById('bv-len').textContent = 'Length: ' + len;
+    const box = document.getElementById('bv-result');
+    if (val === '') { box.className = 'msg-box'; return; }
+    if (len < 8) {
+      box.className = 'msg-box show error';
+      box.textContent = 'Rejected – below minimum length (8). Current: ' + len;
+    } else if (len > 12) {
+      box.className = 'msg-box show error';
+      box.textContent = 'Rejected – above maximum length (12). Current: ' + len;
+    } else {
+      box.className = 'msg-box show success';
+      box.textContent = 'Accepted – password length ' + len + ' is within range (8–12).';
+    }
+  }
+</script>
+</body>
+</html>
